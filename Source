@@ -1,0 +1,131 @@
+getgenv().Active = false
+getgenv().autoHatch = false
+
+--0.1 is fast -- 0.3 is slow
+
+local remotePath = game:GetService("ReplicatedStorage")
+local BlekLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/laderite/bleklib/main/library.lua"))()
+local clickDelay = 0.2
+local EggDelay = 0.3
+
+local win = BlekLib:Create({
+    Name = "Anime Weapon Simulator",
+    StartupSound = {
+        Toggle = true,
+        SoundID = "rbxassetid://6958727243",
+        TimePosition = 1
+    }
+})
+
+local maintab = win:Tab('Credit')
+local uitab = win:Tab('Farming')
+local Misctab = win:Tab('Misc')
+local Teleporttab = win:Tab('Teleport')
+local Teleporttab2 = win:Tab('Teleports II')
+
+local Quittab = win:Tab('Quit')
+
+maintab:Button('KhaotixSins#7350')
+maintab:Button('Teleports only work for areas unlocked')
+maintab:Button('Load me to executor to edit egg type')
+
+uitab:Button('AutoClick', function()
+    getgenv().Active = not getgenv().Active
+    print('AutoClick is', getgenv().Active)
+    if getgenv().Active then
+        doTap()
+    end
+end)
+
+--CHANGE EGG TYPE BELOW
+
+uitab:Button('AutoHatch', function()
+    getgenv().autoHatch = not getgenv().autoHatch
+    print('Auto Hatch is', getgenv().autoHatch)
+    if getgenv().autoHatch then
+        autoHatch(7000001) --change this number to switch type of egg 7000001 = world 1 pet, 7000002 = world 2 pet, etc.
+    end
+end)
+
+--Teleports only work for areas unlocked
+local function teleport(area)
+    local args = {[1] = area}
+    remotePath.ServerMsg.Teleport:FireServer(unpack(args))
+end
+
+
+Teleporttab:Button('Teleport to Area 1', function()
+    teleport(1)
+end)
+
+Teleporttab:Button('Teleport to Area 2', function()
+    teleport(2)
+end)
+
+Teleporttab:Button('Teleport to Area 3', function()
+    teleport(3)
+end)
+
+Teleporttab:Button('Teleport to Area 4', function()
+    teleport(4)
+end)
+
+Teleporttab:Button('Teleport to Area 5', function()
+    teleport(5)
+end)
+
+Teleporttab:Button('Teleport to Area 6', function()
+    teleport(6)
+end)
+
+Teleporttab:Button('Teleport to Area 7', function()
+    teleport(7)
+end)
+
+Teleporttab:Button('Teleport to Area 8', function()
+    teleport(8)
+end)
+
+Teleporttab:Button('Teleport to Area 9', function()
+    teleport(9)
+end)
+
+Teleporttab:Button('Teleport to Area 10', function()
+    teleport(10)
+end)
+
+Teleporttab2:Button('Teleport to Area 11', function()
+    teleport(11)
+end)
+
+Teleporttab2:Button('Teleport to Area 12', function()
+    teleport(12)
+end)
+
+
+function doTap()
+    spawn(function()
+        while getgenv().Active do
+            remotePath.System.SystemClick.Click:FireServer()
+            task.wait(clickDelay)
+        end
+    end)
+end
+
+function autoHatch(EggType)
+    spawn(function()
+        while getgenv().autoHatch do
+            local args = {[1] = EggType, [2] = 1}
+            remotePath.Tool.DrawUp.Msg.DrawHero:InvokeServer(unpack(args))
+            task.wait(EggDelay)
+        end
+    end)
+end
+
+Misctab:Button('Wear Best Pet', function()
+    game:GetService("ReplicatedStorage").ServerMsg.WearBestPet:InvokeServer()
+end)
+
+Quittab:Button('Close GUI', function()
+    win:Exit()
+end)
